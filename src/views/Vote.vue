@@ -21,7 +21,8 @@
           <div class="card-image">
             <figure class="image is-4by3">
               <img
-                src="https://bulma.io/images/placeholders/1280x960.png"
+                style="width: 100%, height: auto"
+                :src="candidate[3]"
                 alt="Placeholder image"
               />
             </figure>
@@ -29,7 +30,7 @@
           <div class="card-content">
             <div class="media">
               <div class="media-content">
-                <p class="title is-4">{{ candidate.name }}</p>
+                <p class="title is-4">{{ candidate[1] }}</p>
               </div>
             </div>
             <div class="content"></div>
@@ -41,64 +42,94 @@
       <div class="control">
         <button
           class="button is-primary"
-          @click="vote ? (confirmed = true) : ''"
+          @click="vote ? confirmVote() : warning()"
         >
           Submit Vote
         </button>
       </div>
     </div>
-    <div class="modal" :class="confirmed ? 'is-active' : ''">
-      <div class="modal-background"></div>
-      <div class="modal-content">
-        <div class="box">
-          <span class="title">Confirm Vote</span>
-          <p>
-            Are you sure you want to vote for <strong>{{ vote.name }}</strong> ?
-          </p>
-          <div class="tile" style="justify-content: center">
-            <div class="field">
-              <div class="control">
-                <router-link to="/post-vote" class="button is-primary">
-                  Confirm Vote
-                </router-link>
-              </div>
-            </div>
-            &nbsp;
-            <div class="field">
-              <div class="control">
-                <button class="button is-primary" @click="confirmed = flase">
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <button class="modal-close is-large" aria-label="close"></button>
-    </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Vote",
+  computed: {
+    ...mapGetters("contracts", ["getContractData"]),
+    ...mapGetters("drizzle", ["drizzleInstance"]),
+    candidates() {
+      let data = this.getContractData({
+        contract: "Election",
+        method: "getCandidates",
+      });
+      if (data === "loading") return false;
+      return data;
+    },
+  },
+  created() {
+    this.$store.dispatch("drizzle/REGISTER_CONTRACT", {
+      contractName: "Election",
+      method: "getCandidates",
+      methodArgs: [],
+    });
+  },
   data() {
     return {
       vote: "",
       confirmed: false,
-      candidates: [
-        { name: "John", id: 1 },
-        { name: "Jane", id: 2 },
-        { name: "Jack", id: 3 },
-        { name: "Jill", id: 4 },
-        { name: "Joe", id: 5 },
-      ],
     };
   },
   methods: {
+    warning() {
+      this.$buefy.toast.open({
+        message: "Please select a candidate",
+        type: "is-danger",
+        queue: false,
+        duration: 3000,
+        position: "is-bottom",
+      });
+    },
+    async performTx() {
+      new Promise((resolve, reject) => {
+        try {
+          let voteContractMethod =
+            this.drizzleInstance.contracts["Election"].methods["vote"];
+          voteContractMethod.cacheSend(this.vote[0]);
+          resolve(true);
+        } catch {
+          reject(false);
+        }
+      });
+    },
     confirmVote() {
+      console.log(this.drizzleInstance);
       if (this.vote) {
-        this.confirmed = true;
+        this.$buefy.dialog.confirm({
+          message: `Confirm Vote for ${this.vote[1]}?`,
+          onConfirm: () => {
+            this.performTx()
+              .then(() => {
+                this.$buefy.toast.open({
+                  message: "Vote submitted",
+                  type: "is-success",
+                  queue: false,
+                  duration: 3000,
+                  position: "is-bottom",
+                });
+                this.$router.push("/result");
+              })
+              .catch(() => {
+                this.$buefy.toast.open({
+                  message: "Vote failed",
+                  type: "is-danger",
+                  queue: false,
+                  duration: 3000,
+                  position: "is-bottom",
+                });
+              });
+          },
+        });
       }
     },
   },

@@ -7,6 +7,7 @@ contract Election {
         uint256 id;
         string name;
         uint256 voteCount;
+        string image;
     }
 
     // Store accounts that have voted
@@ -21,25 +22,25 @@ contract Election {
     event votedEvent(uint256 indexed _candidateId);
 
     constructor() {
-        addCandidate("Candidate 1");
-        addCandidate("Candidate 2");
-        addCandidate("Candidate 3");
+        addCandidate("McDonalds", "https://lassencofair.files.wordpress.com/2016/07/mcdonalds-logo.png");
+        addCandidate("KFC", "https://image.similarpng.com/very-thumbnail/2020/06/kfc-logo-free-download-PNG.png");
+        addCandidate("Burger King", "https://logowik.com/content/uploads/images/burger-king-new-20218389.jpg");
     }
 
-    function addCandidate(string memory _name) private {
+    function addCandidate(string memory _name, string memory _image) private {
         candidatesCount++;
-        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
+        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0, _image);
     }
 
     function vote(uint256 _candidateId) public {
         // require that they haven't voted before
-        require(!voters[msg.sender]);
+        // require(!voters[msg.sender]);
 
         // require a valid candidate
         require(_candidateId > 0 && _candidateId <= candidatesCount);
 
         // record that voter has voted
-        voters[msg.sender] = true;
+        // voters[msg.sender] = true;
 
         // update candidate vote Count
         candidates[_candidateId].voteCount++;

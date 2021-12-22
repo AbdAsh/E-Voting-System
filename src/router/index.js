@@ -24,7 +24,7 @@ const routes = [
     component: Vote,
   },
   {
-    path: "/post-vote",
+    path: "/result",
     name: "PostVote",
     component: PostVote,
   },

@@ -24,7 +24,7 @@
     <div v-if="isDrizzleInitialized" id="app">
       <router-view />
     </div>
-    <div v-else>Loading application...</div>
+    <div class="container" v-else>Loading application...</div>
   </div>
 </template>
 <script>
@@ -32,28 +32,13 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters("drizzle", ["drizzleInstance", "isDrizzleInitialized"]),
-    ...mapGetters("contracts", ["getContractData"]),
-    getCandidates() {
-      let data = this.getContractData({
-        contract: "Election",
-        method: "getCandidates",
-      });
-      if (data === "loading") return false;
-      return data;
-    },
   },
   created() {
-    this.$store
-      .dispatch("drizzle/REGISTER_CONTRACT", {
-        contractName: "Election",
-        method: "getCandidates",
-        methodArgs: [],
-      })
+    this.$drizzleEvents.$on('drizzle/contractEvent', payload => {
+  // const { contractName, eventName, data } = payload;
+  console.log(payload)
+})
   },
-  mounted() {
-    setInterval(() => {
-      console.log(this.getCandidates)}, 5000);
-},
 };
 </script>
 
