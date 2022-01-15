@@ -76,9 +76,9 @@ module.exports = {
   },
 
   // Set default mocha options here, use special reporters etc.
-  mocha: {
+  // mocha: {
     // timeout: 100000
-  },
+  // },
 
   // Configure your compilers
   compilers: {
@@ -116,3 +116,37 @@ module.exports = {
   // }
   // }
 };
+// ----------------------- Moonbeam ---------------------------------------
+
+// const HDWalletProvider = require('@truffle/hdwallet-provider');
+// // Moonbeam Development Node Private Key
+// const privateKeyDev =
+//   '99B3C12287537E38C90A9219D4CB074A89A16E9CDB20BF85728EBD97C343E342';
+// //...
+// module.exports = {
+//   networks: {
+//     dev: {
+//       provider: () => {
+//         return new HDWalletProvider(privateKeyDev, 'http://127.0.0.1:9933')
+//       },
+//       network_id: 1281,  // 0x501 in hex,
+//       gas: 0,           // Gas sent with each transaction (default: ~6700000)
+//       gasPrice: 0,  // 20 gwei (in wei) (default: 100 gwei)
+//     },
+//     //...
+//   },
+//   compilers: {
+//     solc: {
+//       version: "0.8.11",    // Fetch exact version from solc-bin (default: truffle's version)
+//       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
+//       // settings: {          // See the solidity docs for advice about optimization and evmVersion
+//       //  optimizer: {
+//       //    enabled: false,
+//       //    runs: 200
+//       //  },
+//       //  evmVersion: "byzantium"
+//       // }
+//     }
+//   },
+//   plugins: ['moonbeam-truffle-plugin']
+// };
