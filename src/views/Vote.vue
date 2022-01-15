@@ -21,7 +21,7 @@
           <div class="card-image">
             <figure class="image is-4by3">
               <img
-                style="width: 100%, height: auto"
+                style="width: 100%"
                 :src="candidate[3]"
                 alt="Placeholder image"
               />
@@ -41,11 +41,13 @@
     <div class="field">
       <div class="control">
         <button
+          v-if="!loading"
           class="button is-primary"
           @click="vote ? confirmVote() : warning()"
         >
           Submit Vote
         </button>
+        <button v-if="loading" class="button is-primary" disabled>Loading...</button>
       </div>
     </div>
   </div>
@@ -78,6 +80,7 @@ export default {
     return {
       vote: "",
       confirmed: false,
+      loading: false,
     };
   },
   methods: {
@@ -90,25 +93,16 @@ export default {
         position: "is-bottom",
       });
     },
-    async performTx() {
-      new Promise((resolve, reject) => {
-        try {
-          let voteContractMethod =
-            this.drizzleInstance.contracts["Election"].methods["vote"];
-          voteContractMethod.cacheSend(this.vote[0]);
-          resolve(true);
-        } catch {
-          reject(false);
-        }
-      });
-    },
     confirmVote() {
       console.log(this.drizzleInstance);
       if (this.vote) {
         this.$buefy.dialog.confirm({
           message: `Confirm Vote for ${this.vote[1]}?`,
           onConfirm: () => {
-            this.performTx()
+            this.loading = true;
+            this.drizzleInstance.contracts["Election"].methods
+              .vote(this.vote[0])
+              .send()
               .then(() => {
                 this.$buefy.toast.open({
                   message: "Vote submitted",
@@ -119,9 +113,10 @@ export default {
                 });
                 this.$router.push("/result");
               })
-              .catch(() => {
+              .catch((err) => {
+                this.loading = false;
                 this.$buefy.toast.open({
-                  message: "Vote failed",
+                  message: `${err.message}`,
                   type: "is-danger",
                   queue: false,
                   duration: 3000,
