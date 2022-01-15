@@ -1,4 +1,4 @@
-# e-voting-eth-vue2
+# e-voting
 
 ## Project setup
 ```
