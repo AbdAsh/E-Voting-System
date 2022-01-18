@@ -17,16 +17,25 @@ const routes = [
     path: "/verify",
     name: "Verification",
     component: Verify,
+    beforeEnter: (to, from, next) => {
+      from.name == "Home" ? next() : next("/");
+    }
   },
   {
     path: "/vote",
     name: "Vote",
     component: Vote,
+    beforeEnter: (to, from, next) => {
+      from.name == "Verification" ? next() : next("/");
+    }
   },
   {
     path: "/result",
     name: "PostVote",
     component: PostVote,
+    beforeEnter: (to, from, next) => {
+      from.name == "Vote" ? next() : next("/");
+    }
   },
   {
     path: "/about",
