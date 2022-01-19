@@ -59,7 +59,7 @@ export default {
         method: "getCandidates",
       });
       if (data === "loading") return false;
-      return data.filter(e => e[0] != 0);
+      return data.filter((e) => e[0] != 0);
     },
   },
   created() {
@@ -77,13 +77,15 @@ export default {
         .send()
         .then((res) => {
           res.status
-            ? this.$buefy.toast.open({
-                message: "Vote submitted",
+            ? (this.$buefy.toast.open({
+                message: "Candidate Added",
                 type: "is-success",
                 queue: false,
                 duration: 3000,
                 position: "is-bottom",
-              })
+              }),
+              (this.candidate.name = ""),
+              (this.candidate.image = ""))
             : (this.error = true);
         })
         .catch((err) => {
@@ -99,7 +101,7 @@ export default {
         .then((res) => {
           res.status
             ? this.$buefy.toast.open({
-                message: "Vote submitted",
+                message: "Candidate Removed",
                 type: "is-success",
                 queue: false,
                 duration: 3000,
