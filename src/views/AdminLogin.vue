@@ -46,8 +46,8 @@ export default {
       this.drizzleInstance.contracts["Election"].methods
         .isAdmin(this.username, this.password)
         .send()
-        .then((lol) => {
-          lol.status ? this.$router.push("/admin-page") : (this.error = true);
+        .then((res) => {
+          res.status ? this.$router.push("/admin-page") : (this.error = true);
         })
         .catch((err) => {
           this.error = err;
