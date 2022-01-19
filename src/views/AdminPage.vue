@@ -10,7 +10,7 @@
           <label class="label has-text-left">Candidate Image</label>
           <input class="input" type="text" v-model="candidate.image" />
         </div>
-        <p v-if="error" class="help is-danger">Missing Info</p>
+        <p v-if="error" class="help is-danger">An Error Occurred</p>
       </div>
       <div class="control">
         <button
