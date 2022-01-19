@@ -37,7 +37,12 @@ export default {
     };
   },
   mounted() {
-    this.renderChart(this.chartData, this.chartOptions);
+   this.chartData ? this.renderChart(this.chartData, this.chartOptions) : null;
+  },
+  watch: {
+    chartData: function() {
+      this.renderChart(this.chartData, this.chartOptions)
+    },
   },
 };
 </script>
