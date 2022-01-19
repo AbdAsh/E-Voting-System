@@ -92,14 +92,13 @@ export default {
       });
     },
     confirmVote() {
-      console.log(this.drizzleInstance);
       if (this.vote) {
         this.$buefy.dialog.confirm({
           message: `Confirm Vote for ${this.vote[1]}?`,
           onConfirm: () => {
             this.loading = true;
             this.drizzleInstance.contracts["Election"].methods
-              .vote(this.vote[0])
+              .vote(this.vote[0], this.$store.state.TCKimlik)
               .send()
               .then(() => {
                 this.$buefy.toast.open({
@@ -114,7 +113,7 @@ export default {
               .catch((err) => {
                 this.loading = false;
                 this.$buefy.toast.open({
-                  message: `${err.message}`,
+                  message: `${err.code == "-32603" ? "Voter already voted" : err.message}`,
                   type: "is-danger",
                   queue: false,
                   duration: 3000,

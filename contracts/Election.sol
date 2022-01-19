@@ -10,8 +10,10 @@ contract Election {
         string image;
     }
 
+
+
     // Store accounts that have voted
-    mapping(address => bool) public voters;
+    mapping(uint256 => bool) public voters;
     // Store Candidates
     // Fetch Candidate
     mapping(uint256 => Candidate) public candidates;
@@ -32,15 +34,15 @@ contract Election {
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0, _image);
     }
 
-    function vote(uint256 _candidateId) public {
+    function vote(uint256 _candidateId, uint256 _voterId) public {
         // require that they haven't voted before
-        // require(!voters[msg.sender]);
+        require(!voters[_voterId]);
 
         // require a valid candidate
         require(_candidateId > 0 && _candidateId <= candidatesCount);
 
         // record that voter has voted
-        // voters[msg.sender] = true;
+        voters[_voterId] = true;
 
         // update candidate vote Count
         candidates[_candidateId].voteCount++;

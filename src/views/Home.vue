@@ -43,6 +43,7 @@ export default {
   methods: {
     submit() {
       if (this.userID && this.valid) {
+        this.$store.state.TCKimlik = this.userID;
         this.$router.push("/verify");
       }
     },
