@@ -16,24 +16,20 @@
                 :value="candidate"
                 v-model="vote"
               />
-            </label>
-          </div>
-          <div class="card-image">
-            <figure class="image is-4by3">
-              <img
-                style="width: 100%"
-                :src="candidate[3]"
-                alt="Placeholder image"
-              />
-            </figure>
-          </div>
-          <div class="card-content">
-            <div class="media">
-              <div class="media-content">
-                <p class="title is-4">{{ candidate[1] }}</p>
+              <div class="card-image">
+                <figure class="image">
+                  <img class="is-rounded" style="height: 20rem; padding: 10px 0;" :src="candidate[3]" alt="Placeholder image" />
+                </figure>
               </div>
-            </div>
-            <div class="content"></div>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4">{{ candidate[1] }}</p>
+                  </div>
+                </div>
+                <div class="content"></div>
+              </div>
+            </label>
           </div>
         </div>
       </div>
@@ -47,7 +43,9 @@
         >
           Submit Vote
         </button>
-        <button v-if="loading" class="button is-primary" disabled>Loading...</button>
+        <button v-if="loading" class="button is-primary" disabled>
+          Loading...
+        </button>
       </div>
     </div>
   </div>
