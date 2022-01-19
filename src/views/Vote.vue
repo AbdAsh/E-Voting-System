@@ -64,7 +64,7 @@ export default {
         method: "getCandidates",
       });
       if (data === "loading") return false;
-      return data;
+      return data.filter(e => e[0] != 0);
     },
   },
   created() {

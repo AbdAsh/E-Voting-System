@@ -4,6 +4,8 @@ import Home from "../views/Home.vue";
 import Verify from "../views/Verify.vue";
 import Vote from "../views/Vote.vue";
 import PostVote from "../views/PostVote.vue";
+import AdminLogin from "../views/AdminLogin.vue";
+import AdminPage from "../views/AdminPage.vue";
 
 Vue.use(VueRouter)
 
@@ -46,7 +48,20 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
   },
-];
+  {
+    path: "/admin",
+    name: "Admin",
+    component: AdminLogin
+  },
+  {
+    path: "/admin-page",
+    name: "Admin Page",
+    component: AdminPage,
+    beforeEnter: (to, from, next) => {
+      from.name == "Admin" ? next() : next("/admin");
+    }
+  }
+]
 
 const router = new VueRouter({
   mode: 'history',

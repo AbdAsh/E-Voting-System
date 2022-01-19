@@ -10,6 +10,8 @@ contract Election {
         string image;
     }
 
+    string private admin = "Admin";
+    string private password = "0000";
 
 
     // Store accounts that have voted
@@ -29,9 +31,29 @@ contract Election {
         addCandidate("Burger King", "https://logowik.com/content/uploads/images/burger-king-new-20218389.jpg");
     }
 
-    function addCandidate(string memory _name, string memory _image) private {
+    function addCandidate(string memory _name, string memory _image) public {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, 0, _image);
+    }
+
+    function isAdmin(string memory _admin, string memory _password) public view{
+        require(stringsEquals(_admin,admin) && stringsEquals(_password,password));
+    }
+
+    function stringsEquals(string memory s1, string memory s2) private pure returns (bool) {
+    bytes memory b1 = bytes(s1);
+    bytes memory b2 = bytes(s2);
+    uint256 l1 = b1.length;
+    if (l1 != b2.length) return false;
+    for (uint256 i=0; i<l1; i++) {
+        if (b1[i] != b2[i]) return false;
+    }
+    return true;
+}
+
+    function deleteCandidate(uint256 _id) public {
+        require(candidates[_id].voteCount == 0);
+        delete candidates[_id];
     }
 
     function vote(uint256 _candidateId, uint256 _voterId) public {
