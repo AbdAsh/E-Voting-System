@@ -1,11 +1,6 @@
 <template>
   <div class="container box">
     <div class="title">Welcome to E-Voting</div>
-    <div class="subtitle">
-      <p>This is a simple voting system built with Smart Contracts.</p>
-      <p>You can vote for any of the candidates below.</p>
-      <p>But please verify you identity first.</p>
-    </div>
     <form @submit.prevent="submit">
       <div class="field">
         <label class="label">Please enter you ID Number</label>
