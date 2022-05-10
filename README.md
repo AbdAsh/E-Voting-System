@@ -1,4 +1,4 @@
-# E-Voting System using Smart Contract
+# E-Voting System using Smart Contracts
 
 # Project setup
 
